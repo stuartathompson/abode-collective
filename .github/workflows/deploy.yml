@@ -15,20 +15,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          # Updated to Node 24 to clear the deprecation warning
+          node-version: 24
+          # Removed the 'cache' line that was causing the error
+
       - name: Install dependencies
+        # This will work even without a lock file
         run: npm install
+
       - name: Build
         run: npm run build
+
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          # This folder might be 'dist' or 'build' depending on your config. 
-          # AI Studio usually uses 'dist'.
+          # AI Studio Vite projects build into the 'dist' folder
           path: './dist'
 
   deploy:
